@@ -6,6 +6,8 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.example.student.customlayoutmanager.layoutmanagers.AdLayoutManager;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private SpecificationAdapter specificationAdapter;
     private SpecificationLayoutManager layoutManager;
+    private AdLayoutManager adLayoutManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,10 +34,13 @@ public class MainActivity extends AppCompatActivity {
     private void initRecycler() {
         LinearLayoutManager test = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         specificationAdapter = new SpecificationAdapter();
+        adLayoutManager = new AdLayoutManager(specificationAdapter.getLayoutInfoLookup());
+
+
         layoutManager = new SpecificationLayoutManager();
         recyclerView.addItemDecoration(
                 new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(test);
+        recyclerView.setLayoutManager(adLayoutManager);
         recyclerView.setAdapter(specificationAdapter);
     }
 

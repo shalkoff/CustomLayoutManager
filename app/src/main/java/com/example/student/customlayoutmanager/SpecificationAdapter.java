@@ -5,6 +5,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.student.customlayoutmanager.enums.LayoutGravity;
+import com.example.student.customlayoutmanager.enums.SpanCount;
+import com.example.student.customlayoutmanager.interfaces.LayoutInfoLookup;
+
 import java.util.List;
 
 /**
@@ -182,4 +186,48 @@ public class SpecificationAdapter extends RecyclerView.Adapter {
             super(itemView);
         }
     }
+
+    public LayoutInfoLookup getLayoutInfoLookup() {
+        return layoutInfoLookup;
+    }
+
+    private final LayoutInfoLookup layoutInfoLookup = new LayoutInfoLookup() {
+        @Override
+        public SpanCount getRowSpan(int position) {
+            return SpanCount.ONE;
+        }
+
+        @Override
+        public SpanCount getColumnSpan(int position) {
+            int viewType = getItemViewType(position);
+            if (viewType == CATALOG_HEADER_VIEW_TYPE ||
+                    viewType == SPEC_ABC_HEADER_VIEW_TYPE ||
+                    viewType == SPEC_USER_HEADER_VIEW_TYPE) {
+                return SpanCount.TWO;
+            } else {
+                return SpanCount.ONE;
+            }
+        }
+
+        @Override
+        public boolean useViewSize(int position) {
+           /* int viewType = getItemViewType(position);
+            if (viewType == SPEC_USER_LIST_VIEW_TYPE || viewType == SPEC_ABC_LIST_VIEW_TYPE) {
+                return true;
+            } else {
+                return false;
+            }*/
+            return true;
+        }
+
+        @Override
+        public LayoutGravity getGravity(int position) {
+            int viewType = getItemViewType(position);
+            if (viewType == SPEC_USER_LIST_VIEW_TYPE || viewType == SPEC_ABC_LIST_VIEW_TYPE) {
+                return position % 2 == 0 ? LayoutGravity.LEFT : LayoutGravity.RIGHT;
+            } else {
+                return LayoutGravity.LEFT;
+            }
+        }
+    };
 }
