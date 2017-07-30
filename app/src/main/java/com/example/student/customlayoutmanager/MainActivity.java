@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,21 +30,25 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void initRecycler() {
-        LinearLayoutManager test = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
+        StaggeredGridLayoutManager test = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+
         specificationAdapter = new SpecificationAdapter();
-        layoutManager = new SpecificationLayoutManager();
-        recyclerView.addItemDecoration(
-                new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setLayoutManager(test);
+        //HeaderAdapter headerAdapter = new HeaderAdapter(specificationAdapter);
         recyclerView.setAdapter(specificationAdapter);
+
+        ExStaggeredGridLayoutManager staggeredGridLayoutManager = new ExStaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+        staggeredGridLayoutManager.setSpanSizeLookup(new HeaderSpanSizeLookup((SpecificationAdapter) recyclerView.getAdapter(), staggeredGridLayoutManager.getSpanCount()));
+        recyclerView.setLayoutManager(test);
     }
 
     private void setupRecycler() {
         List<String> stringList = new ArrayList<>();
         List<String> ageList = new ArrayList<>();
-        for (int i=0; i < 20; i++) {
+        for (int i=0; i < 21; i++) {
                 stringList.add("stringList"+i);
-                ageList.add("ageList"+i);
+        }
+        for (int i=0; i < 10; i++) {
+            ageList.add("ageList"+i);
         }
         specificationAdapter.setData(new DataModel("Surf", "Mail.ru", stringList, ageList));
     }

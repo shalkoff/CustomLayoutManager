@@ -1,6 +1,7 @@
 package com.example.student.customlayoutmanager;
 
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,7 +28,6 @@ public class SpecificationAdapter extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view;
         RecyclerView.ViewHolder viewHolder = null;
-
         switch (viewType) {
             case CATALOG_HEADER_VIEW_TYPE:
                 view = LayoutInflater.from(parent.getContext())
@@ -66,6 +66,53 @@ public class SpecificationAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        int firstListSize = 0;
+        int secondListSize = 0;
+
+        if (ageList == null && nameList == null)
+            return;
+
+        if (ageList != null)
+            secondListSize = ageList.size();
+        if (nameList != null)
+            firstListSize = nameList.size();
+
+        if (secondListSize > 0 && firstListSize > 0) {
+            if (position == 0) {
+                setFillSpan(holder);
+            } else if (position == 1) {
+                setFillSpan(holder);
+            } else if (position == secondListSize + 1) {
+                setFillSpan(holder);
+            }
+
+        } else if (secondListSize > 0 && firstListSize == 0) {
+            if (position == 0) {
+                setFillSpan(holder);
+            } else if (position == 1) {
+                setFillSpan(holder);
+            } else if (position == 2) {
+                setFillSpan(holder);
+            } else if (position == 3) {
+                {
+                    setFillSpan(holder);
+                }
+
+            } else if (secondListSize == 0 && firstListSize > 0) {
+                if (position == 0) {
+                    setFillSpan(holder);
+                } else if (position == 1) {
+                    setFillSpan(holder);
+                }
+            }
+        }
+    }
+
+    public void setFillSpan(RecyclerView.ViewHolder holder) {
+        ViewGroup.LayoutParams layoutParams = holder.itemView.getLayoutParams();
+        if (layoutParams instanceof StaggeredGridLayoutManager.LayoutParams) {
+            ((StaggeredGridLayoutManager.LayoutParams) layoutParams).setFullSpan(true);
+        }
     }
 
     @Override
